@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mutating Polygons</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <span class="column">
+      <p style="margin-bottom: 0px"><b>Current Graphic</b></p>
+      <p style="margin-bottom: 20px">Trying to use triangles to replicate the original image.</p>
+    </span>
+    <span class="column">
+      <p style="margin-bottom: 0px"><b>Offscreen Graphic</b></p>
+      <p style="margin-bottom: 20px">This loads possible mutations, which are then compared to the original image, and becomes the 'Current Graphic' if it has a better fitness score.</p>
+    </span>
+    <span class="column">
+      <p style="margin-bottom: 0px"><b>Original Image</b></p>
+      <p style="margin-bottom: 20px">The image we're trying to replicate.</p>
+    </span>
+  </div>
+  <script src="regular.js"></script>
+</body>
+</html>
