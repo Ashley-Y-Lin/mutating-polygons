@@ -19,6 +19,8 @@ let crossoverFitness
 let currFitness = Number.MAX_VALUE
 let totalMutations = 0
 let successfulMutations = 0
+let crossoverChosen = 0
+let logged = 0
 
 function preload(){
   img = loadImage("girl.jpeg")
@@ -79,6 +81,7 @@ function draw(){
     if (crossoverFitness<=offspring1Fitness && crossoverFitness<=offspring2Fitness){
       currFitness = crossoverFitness
       DNA = crossoverDNA
+      crossoverChosen++
     }else if (crossoverFitness>=offspring1Fitness && crossoverFitness<=offspring2Fitness){
       currFitness = offspring1Fitness
       DNA = offspring1
@@ -98,6 +101,7 @@ function draw(){
     successfulMutations += 1
     offspringCount = 0
   }
+  logReport()
   console.log(currFitness)
   image(main, 0, 0)
   image(offscreen, 350, 0)
@@ -107,6 +111,49 @@ function draw(){
 function crossover(o1, o2, location){
   let outArr = o1.slice(0, location).concat(o2.slice(location, o2.length))
   return outArr
+}
+
+function logReport(){
+  if ((logged == 0) && (currFitness < 2500)){
+    let seconds = (millis()/1000)%60
+    let min = (millis()/1000)/60
+    console.log("When the fitness score is 2500...")
+    console.log(`Total mutations: ${totalMutations}`)
+    console.log(`Successful mutations: ${successfulMutations}`)
+    console.log(`Crossover chosen over two children ${crossoverChosen} times`)
+    console.log(`Time passed: ${min} min, ${seconds} secs`)
+    logged++
+  }
+  if ((logged == 1) && (currFitness < 1000)){
+    let seconds = (millis()/1000)%60
+    let min = (millis()/1000)/60
+    console.log("When the fitness score is 1000...")
+    console.log(`Total mutations: ${totalMutations}`)
+    console.log(`Successful mutations: ${successfulMutations}`)
+    console.log(`Crossover chosen over two children ${crossoverChosen} times`)
+    console.log(`Time passed: ${min} min, ${seconds} secs`)
+    logged++
+  }
+  if ((logged == 2) && (currFitness < 500)){
+    let seconds = (millis()/1000)%60
+    let min = (millis()/1000)/60
+    console.log("When the fitness score is 500...")
+    console.log(`Total mutations: ${totalMutations}`)
+    console.log(`Successful mutations: ${successfulMutations}`)
+    console.log(`Crossover chosen over two children ${crossoverChosen} times`)
+    console.log(`Time passed: ${min} min, ${seconds} secs`)
+    logged++
+  }
+  if ((logged == 3) && (currFitness < 250)){
+    let seconds = (millis()/1000)%60
+    let min = (millis()/1000)/60
+    console.log("When the fitness score is 250...")
+    console.log(`Total mutations: ${totalMutations}`)
+    console.log(`Successful mutations: ${successfulMutations}`)
+    console.log(`Crossover chosen over two children ${crossoverChosen} times`)
+    console.log(`Time passed: ${min} min, ${seconds} secs`)
+    logged++
+  }
 }
 
 function getFitness(mutatedPixels, imagePixels){
