@@ -2,7 +2,7 @@ let main
 let offscreen
 let img
 let polygons = 100
-let polygonCoord = 3
+let polygonVertices = 4
 let DNA = []
 let shapeMutationRate = .005
 let colorMutationRate = .005
@@ -43,7 +43,7 @@ function setup(){
     let ipx, ipy
     let ipixel
 
-    for (let j=0; j<polygonCoord; j++){
+    for (let j=0; j<polygonVertices; j++){
       px = Math.floor(map(Math.random(), 0, 1, 0, main.width))
       py = Math.floor(map(Math.random(), 0, 1, 0, main.height))
       DNA.push(px, py)
@@ -199,7 +199,6 @@ function getFitness(mutatedPixels, imagePixels){
       squaredDiff += (mutatedPixels[location+3] - imagePixels[location+3]) * (mutatedPixels[location+3] - imagePixels[location+3])
     }
   }
-  //console.log(squaredDiff)
   return squaredDiff / (img.width * img.height * 4)
 }
 
@@ -207,29 +206,16 @@ function mutate(){
   let roll1
   let roll2
   mutatedDNA = DNA.slice()
-  scaleFactor = .5
-  for (let i=0; i<DNA.length; i+=10){
-    for (let j=0; j<polygonCoord * 2; j+=2){
+  for (let i=0; i<DNA.length; i+=polygonVertices*2+4){
+    for (let j=0; j<polygonVertices*2; j+=2){
       roll1 = Math.random()
       roll2 = Math.random()
       if (roll1 < shapeMutationRate){
         let tempX = map(Math.random(), 0, 1, 0, main.width)
-        /*
-        if (logged >= 3){
-          let centerX = (DNA[i] + DNA[i+2] + DNA[i+4]) / 3
-          tempX = centerX + ((tempX - centerX) * scaleFactor)
-        }
-        */
         mutatedDNA[i+j] = tempX
       }
       if (roll2 < shapeMutationRate){
         let tempY = map(Math.random(), 0, 1, 0, main.height)
-        /*
-        if (logged >= 3){
-          let centerY = (DNA[i+1] + DNA[i+3] + DNA[i+5]) / 3
-          tempY = centerY + ((tempY - centerY) * scaleFactor)
-        }
-        */
         mutatedDNA[i+j+1] = tempY
       }
     }
@@ -237,13 +223,13 @@ function mutate(){
     if (roll1 < colorMutationRate){
       for (let k=0; k<3; k++){
         let temp = map(Math.random(), 0, 1, -50, 50)
-        if (mutatedDNA[i+k+6] + temp > 255){
+        if (mutatedDNA[i+k+polygonVertices*2] + temp > 255){
           temp = 255
         }
-        if (mutatedDNA[i+k+6] + temp < 0){
+        if (mutatedDNA[i+k+polygonVertices*2] + temp < 0){
           temp = 0
         }
-        mutatedDNA[i+k+6] += temp
+        mutatedDNA[i+k+polygonVertices*2] += temp
       }
     }
   }
@@ -253,9 +239,9 @@ function mutate(){
 function renderPolygonsOffscreen(myDNA){
   offscreen.clear()
   offscreen.noStroke()
-  for (let i=0; i<myDNA.length; i+=10){
-    offscreen.fill(myDNA[i+6], myDNA[i+7], myDNA[i+8], myDNA[i+9])
-    offscreen.triangle(myDNA[i], myDNA[i+1], myDNA[i+2], myDNA[i+3], myDNA[i+4], myDNA[i+5])
+  for (let i=0; i<myDNA.length; i+=polygonVertices*2+4){
+    offscreen.fill(myDNA[i+8], myDNA[i+9], myDNA[i+10], myDNA[i+11])
+    offscreen.quad(myDNA[i], myDNA[i+1], myDNA[i+2], myDNA[i+3], myDNA[i+4], myDNA[i+5], myDNA[i+6], myDNA[i+7])
   }
   offscreen.loadPixels()
   return offscreen.pixels
@@ -264,9 +250,9 @@ function renderPolygonsOffscreen(myDNA){
 function renderPolygonsOnCanvas(){
   main.clear()
   main.noStroke()
-  for (let i=0; i<DNA.length; i+=10){
-    main.fill(DNA[i+6], DNA[i+7], DNA[i+8], DNA[i+9])
-    main.triangle(DNA[i], DNA[i+1], DNA[i+2], DNA[i+3], DNA[i+4], DNA[i+5])
+  for (let i=0; i<DNA.length; i+=polygonVertices*2+4){
+    main.fill(DNA[i+8], DNA[i+9], DNA[i+10], DNA[i+11])
+    main.quad(DNA[i], DNA[i+1], DNA[i+2], DNA[i+3], DNA[i+4], DNA[i+5], DNA[i+6], DNA[i+7])
   }
 }
 
